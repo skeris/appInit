@@ -13,27 +13,27 @@ type CommonApp interface {
 	GetErr() chan error
 }
 
-type AppConstructor =  func(ctx context.Context) (CommonApp, error)
+type AppConstructor =  func(ctx context.Context, opts interface{}) (CommonApp, error)
 
-func Initialize(constructor AppConstructor) {
+func Initialize(constructor AppConstructor, opts interface{}) {
 	defer time.Sleep(1500 * time.Millisecond)
 
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	sm, err := constructor(ctx)
+	sm, err := constructor(ctx, getEnv(opts))
 	if err != nil {
 		panic(err)
 	}
 	stop := make(chan os.Signal, 1)
 	signal.Notify(stop, os.Interrupt)
 
-	logger := (*sm).GetLogger()
+	logger := sm.GetLogger()
 
 	select {
 	case <-stop:
 		logger.Info("Application was interrupted.")
-	case err := <-(*sm).GetErr():
+	case err := <-sm.GetErr():
 		logger.Panic("A fatal error occured", zap.Error(err))
 	}
 }
