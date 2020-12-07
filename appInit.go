@@ -21,7 +21,7 @@ func Initialize(constructor AppConstructor, opts interface{}) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	sm, err := constructor(ctx, getEnv(opts))
+	sm, err := constructor(ctx, opts)
 	if err != nil {
 		panic(err)
 	}
