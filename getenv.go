@@ -16,6 +16,10 @@ const (
 
 func getEnv(mask interface{}) interface{} {
 	r := reflect.ValueOf(mask)
+
+	var argTypeRV reflect.Value
+	argTypeRV = reflect.New(r.Type())
+
 	for i := 0; i < r.NumField(); i++ {
 		v := r.Type().Field(i).Tag.Get(ENV)
 		d := r.Type().Field(i).Tag.Get(DEFAULT)
@@ -33,7 +37,7 @@ func getEnv(mask interface{}) interface{} {
 
 		switch t := r.Type().Field(i).Type.Name(); t {
 		case "string":
-			r.Field(i).SetString(val)
+			argTypeRV.Field(i).SetString(val)
 		case "bool":
 			if strings.ToLower(val) == "true" {
 				reflect.ValueOf(&mask).Elem().Field(i).SetBool(true)
