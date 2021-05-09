@@ -51,5 +51,5 @@ func getEnv(mask interface{}) interface{} {
 		}
 	}
 
-	return argTypeRV.Interface()
+	return reflect.ValueOf(argTypeRV.Interface()).Elem()
 }
