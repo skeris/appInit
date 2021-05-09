@@ -53,5 +53,5 @@ func getEnv(mask interface{}) interface{} {
 	}
 
 	fmt.Println("ORA", argTypeRV)
-	return argTypeRV.Interface()
+	return argTypeRV.Elem().Interface()
 }
