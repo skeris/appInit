@@ -37,7 +37,7 @@ func getEnv(mask interface{}) interface{} {
 
 		switch t := r.Type().Field(i).Type.Name(); t {
 		case "string":
-			argTypeRV.Field(i).SetString(val)
+			argTypeRV.Elem().Field(i).SetString(val)
 		case "bool":
 			if strings.ToLower(val) == "true" {
 				reflect.ValueOf(&mask).Elem().Field(i).SetBool(true)
