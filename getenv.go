@@ -31,29 +31,26 @@ func getEnv(mask interface{}) interface{} {
 		} else {
 			val = d
 		}
-		fmt.Println("ORA", v, d)
-		fmt.Println("ORA1", reflect.ValueOf(&mask))
-		fmt.Println("ORA12", reflect.ValueOf(mask))
 
 		switch t := r.Type().Field(i).Type.Name(); t {
 		case "string":
 			argTypeRV.Elem().Field(i).SetString(val)
 		case "bool":
 			if strings.ToLower(val) == "true" {
-				reflect.ValueOf(&mask).Elem().Field(i).SetBool(true)
+				argTypeRV.Elem().Field(i).SetBool(true)
 			} else {
-				reflect.ValueOf(&mask).Elem().Field(i).SetBool(false)
+				argTypeRV.Elem().Field(i).SetBool(false)
 			}
 		case "uint64":
 			num, err := strconv.ParseUint(val, 10, 64)
 			if err != nil {
 				panic(err)
 			}
-			reflect.ValueOf(&mask).Elem().Field(i).SetUint(num)
+			argTypeRV.Elem().Field(i).SetUint(num)
 		default:
 			panic(errors.New("Something strange happend: " + t))
 		}
 	}
 
-	return mask
+	return argTypeRV.Interface()
 }
