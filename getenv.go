@@ -27,15 +27,13 @@ func getEnv(mask interface{}) interface{} {
 		} else {
 			val = d
 		}
-
 		fmt.Println("ORA", v, d)
-
 		fmt.Println("ORA1", reflect.ValueOf(&mask))
 		fmt.Println("ORA12", reflect.ValueOf(mask))
 
 		switch t := r.Type().Field(i).Type.Name(); t {
 		case "string":
-			reflect.ValueOf(&mask).Elem().Field(i).SetString(val)
+			r.Field(i).SetString(val)
 		case "bool":
 			if strings.ToLower(val) == "true" {
 				reflect.ValueOf(&mask).Elem().Field(i).SetBool(true)
