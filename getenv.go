@@ -6,7 +6,6 @@ import (
 	"reflect"
 	"strconv"
 	"strings"
-	"fmt"
 )
 
 const (
@@ -52,6 +51,5 @@ func getEnv(mask interface{}) interface{} {
 		}
 	}
 
-	fmt.Println("ORA", argTypeRV)
 	return argTypeRV.Elem().Interface()
 }
