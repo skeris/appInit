@@ -2,6 +2,7 @@ package appInit
 
 import (
 	"errors"
+	"fmt"
 	"os"
 	"reflect"
 	"strconv"
@@ -26,6 +27,11 @@ func getEnv(mask interface{}) interface{} {
 		} else {
 			val = d
 		}
+
+		fmt.Println("ORA", v, d)
+
+		fmt.Println("ORA1", reflect.ValueOf(&mask))
+		fmt.Println("ORA12", reflect.ValueOf(mask))
 
 		switch t := r.Type().Field(i).Type.Name(); t {
 		case "string":
