@@ -13,7 +13,7 @@ type CommonApp interface {
 	GetErr() chan error
 }
 
-type AppConstructor =  func(ctx context.Context, opts interface{}) (CommonApp, error)
+type AppConstructor = func(ctx context.Context, opts interface{}) (CommonApp, error)
 
 func Initialize(constructor AppConstructor, opts interface{}) {
 	defer time.Sleep(1500 * time.Millisecond)
@@ -21,7 +21,7 @@ func Initialize(constructor AppConstructor, opts interface{}) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	sm, err := constructor(ctx, opts)
+	sm, err := constructor(ctx, getEnv(opts))
 	if err != nil {
 		panic(err)
 	}
