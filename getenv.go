@@ -2,7 +2,6 @@ package appInit
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"reflect"
 	"strconv"
