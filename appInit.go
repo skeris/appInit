@@ -2,6 +2,7 @@ package appInit
 
 import (
 	"context"
+	"github.com/skeris/appInit/version"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
@@ -13,7 +14,11 @@ type CommonApp interface {
 	GetErr() chan error
 }
 
-type AppConstructor = func(ctx context.Context, opts interface{}) (CommonApp, error)
+type AppConstructor = func(context.Context, interface{}, Version) (CommonApp, error)
+
+type Version struct {
+	Release, Commit, BuildTime string
+}
 
 func Initialize(constructor AppConstructor, opts interface{}) {
 	defer time.Sleep(1500 * time.Millisecond)
@@ -21,7 +26,11 @@ func Initialize(constructor AppConstructor, opts interface{}) {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	sm, err := constructor(ctx, getEnv(opts))
+	sm, err := constructor(ctx, getEnv(opts), Version{
+		Release:   version.Release,
+		Commit:    version.Commit,
+		BuildTime: version.BuildTime,
+	})
 	if err != nil {
 		panic(err)
 	}
