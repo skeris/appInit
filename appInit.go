@@ -43,6 +43,8 @@ func Initialize(constructor AppConstructor, opts interface{}) {
 	case <-stop:
 		logger.Info("Application was interrupted.")
 	case err := <-sm.GetErr():
-		logger.Panic("A fatal error occured", zap.Error(err))
+		if err != nil {
+			logger.Panic("A fatal error occured", zap.Error(err))
+		}
 	}
 }
